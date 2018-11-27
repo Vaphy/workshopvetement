@@ -42,8 +42,8 @@ def inscription():
     if request.form['user'] and request.form['password']:
         user=request.form['user']
         password=request.form['password']
-        app.logger.info(user)
-        app.logger.info(password)
+        print(user)
+        print(password)
         return jsonify(
             retour="bien inscrit"
         ), 200
