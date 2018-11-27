@@ -5,10 +5,12 @@ import cgitb; cgitb.enable()
 import os
 import requests
 import color
+import logging
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_talisman import Talisman
 from werkzeug.utils import secure_filename
+from logging.handlers import RotatingFileHandler
 
 app = Flask(__name__)
 CORS(app)
@@ -40,8 +42,8 @@ def inscription():
     if request.form['user'] and request.form['password']:
         user=request.form['user']
         password=request.form['password']
-        console.log(user)
-        console.log(password)
+        app.logger.info(user)
+        app.logger.info(password)
         return jsonify(
             retour="bien inscrit"
         ), 200
