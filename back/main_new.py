@@ -37,7 +37,7 @@ def index():
 # Sécurisation du code en https avec flask-talisman
 @talisman(force_https=True)
 def inscription():
-    if request.form['user'] AND request.form['password']:
+    if request.form['user'] and request.form['password']:
         user=request.form['user']
         password=request.form['password']
         console.log(user)
