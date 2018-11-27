@@ -5,6 +5,7 @@ import cgitb; cgitb.enable()
 import os
 import requests
 import color
+import database
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_talisman import Talisman
@@ -78,6 +79,16 @@ def upload():
                 "code": "error"
             }
             return jsonify(d)
+
+
+# Réception d'un fichier
+@app.route('/list/clothes', methods=['GET'])
+# Sécurisation du code en https avec flask-talisman
+@talisman(force_https=True)
+def list_clothes():
+    sql = "SELECT * FROM vetement"
+    r = database.select(sql)
+    return jsonify(r)
 
 
 if __name__ == '__main__':
