@@ -4,6 +4,7 @@
 import cgitb; cgitb.enable()
 import os
 import requests
+import color
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_talisman import Talisman
@@ -41,7 +42,7 @@ def upload():
     Prend en entrée un fichier
 
     Retourne un json de type :
-        - {"code": "ok"}
+        - {"code": "ok", "color": "#<color>"}
             - Quand le fichier est bien reçu
         - {"code": "error", "error": "<explication>"}
             - Quand il y a une erreur avec l'envoie du fichier
@@ -63,9 +64,12 @@ def upload():
 
         elif f:
             filename = secure_filename(f.filename)
-            f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            f_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            f.save(f_path)
+            f_color = color.get_color(f_path)
             d = {
-                "code": "ok"
+                "code": "ok",
+                "color": f_color
             }
             return jsonify(d)
         else:
