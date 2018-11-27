@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-## nécéssaire d'installer python3, pip , flask, requests, flask-cors, flask-talisman
+## nécéssaire d'installer python3, pip , flask, requests, flask-cors, flask-talisman, PyMySQL
 
 import cgitb; cgitb.enable()
 import os
@@ -42,11 +42,9 @@ def inscription():
     if request.form['user'] and request.form['password']:
         user=request.form['user']
         password=request.form['password']
-        print(user)
-        print(password)
-        return jsonify(
-            retour="bien inscrit"
-        ), 200
+        sql = "insert into users (login, password) values (user, password);"
+        r = database.insert(sql)
+        return jsonify(r), 200
     else:
         return jsonify(
             retour="erreur durant l'inscription"
