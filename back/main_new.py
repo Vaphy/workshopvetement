@@ -1,47 +1,71 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 ## nécéssaire d'installer python3, pip , flask, requests, flask-cors, flask-talisman
 
 import cgitb; cgitb.enable()
+import os
 import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_talisman import Talisman
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 CORS(app)
 talisman = Talisman(app)
 
+# Upload folder for files
+UPLOAD_FOLDER = './files'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 array = []
 
-#Json rempli manuellement pour le moment, mais qui devrait se remplir automatiquement par la suite
+# Json rempli manuellement pour le moment, mais qui devrait se remplir automatiquement par la suite
 retourErreur = {
 }
 
+# Fonction de test de vie de l'API
 @app.route('/')
-#fonction de test de vie de l'API
 def index():
-    return "Hello world!"
+    d = {
+        "Hello": "World !"
+    }
+    return jsonify(d)
 
-#réception d'un fichier
-@app.route('/reception_fichier', methods=['POST'])
-#sécurisation du code en https avec flask-talisman
+
+# Réception d'un fichier
+@app.route('/upload', methods=['POST'])
+# Sécurisation du code en https avec flask-talisman
 @talisman(force_https=True)
-def reception_fichier(self, request):
-	try:
-		if 'recipe_image' in request.files:
-			filename = images.save(request.files['recipe_image'])
-			self.image_filename = filename
-			self.image_url = images.url(filename)
-		else:
-			json_data = request.get_json()
-			self.recipe_title = json_data['title']
-			self.recipe_description = json_data['description']
-			if 'recipe_type' in json_data:
-				self.recipe_type = json_data['recipe_type']
-	except KeyError as e:
-		raise ValidationError('Invalid recipe: missing ' + e.args[0])
-	return self
+def upload():
+    if 'file' not in request.files:
+        d = {
+            "error": "No file",
+            "code": "error"
+        }
+        return jsonify(d)
+    else:
+        f = request.files['file']
+        if f.filename == '':
+            d = {
+                "error": "Filename is empty",
+                "code": "error"
+            }
+            return jsonify(d)
+
+        elif f:
+            filename = secure_filename(f.filename)
+            f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            d = {
+                "code": "ok"
+            }
+            return jsonify(d)
+        else:
+            d = {
+                "error": "error with upload file",
+                "code": "error"
+            }
+            return jsonify(d)
 
 
 if __name__ == '__main__':
-	app.run(debug=True, host='0.0.0.0')
+        app.run(debug=True, host='0.0.0.0')
