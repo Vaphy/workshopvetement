@@ -22,6 +22,26 @@ retourErreur = {
 def index():
     return "Hello world!"
 
+#réception d'un fichier
+@app.route('/reception_fichier', methods=['POST'])
+#sécurisation du code en https avec flask-talisman
+@talisman(force_https=True)
+def reception_fichier(self, request):
+	try:
+        if 'recipe_image' in request.files:
+            filename = images.save(request.files['recipe_image'])
+            self.image_filename = filename
+            self.image_url = images.url(filename)
+        else:
+            json_data = request.get_json()
+            self.recipe_title = json_data['title']
+            self.recipe_description = json_data['description']
+            if 'recipe_type' in json_data:
+                self.recipe_type = json_data['recipe_type']
+    except KeyError as e:
+        raise ValidationError('Invalid recipe: missing ' + e.args[0])
+    return self
+
 
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0')
