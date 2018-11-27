@@ -42,7 +42,7 @@ def inscription():
     if request.form['user'] and request.form['password']:
         user=request.form['user']
         password=request.form['password']
-        sql = "insert into users (login, password) values ("user","password");"
+        sql = "insert into users (login, password) values ('user','password');"
         r = database.insert(sql)
         return jsonify(r), 200
     else:
