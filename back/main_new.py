@@ -10,6 +10,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_talisman import Talisman
 from werkzeug.utils import secure_filename
+from logging.handlers import RotatingFileHandler
 
 app = Flask(__name__)
 CORS(app)
@@ -32,6 +33,26 @@ def index():
         "Hello": "World !"
     }
     return jsonify(d)
+
+#inscription d'un utilisateur
+@app.route('/inscription', methods=['POST'])
+# Sécurisation du code en https avec flask-talisman
+@talisman(force_https=True)
+def inscription():
+    if request.form['user'] and request.form['password']:
+        user=request.form['user']
+        password=request.form['password']
+        app.logger.info(user)
+        app.logger.info(password)
+        return jsonify(
+            retour="bien inscrit"
+        ), 200
+    else:
+        return jsonify(
+            retour="erreur durant l'inscription"
+        ), 400
+
+
 
 
 # Réception d'un fichier
