@@ -37,6 +37,15 @@ def index():
 # Sécurisation du code en https avec flask-talisman
 @talisman(force_https=True)
 def upload():
+    """
+    Prend en entrée un fichier
+
+    Retourne un json de type :
+        - {"code": "ok"}
+            - Quand le fichier est bien reçu
+        - {"code": "error", "error": "<explication>"}
+            - Quand il y a une erreur avec l'envoie du fichier
+    """
     if 'file' not in request.files:
         d = {
             "error": "No file",
