@@ -32,6 +32,26 @@ def index():
     }
     return jsonify(d)
 
+#inscription d'un utilisateur
+@app.route('/inscription', methods=['POST'])
+# Sécurisation du code en https avec flask-talisman
+@talisman(force_https=True)
+def inscription():
+    if request.form['user'] AND request.form['password']:
+        user=request.form['user']
+        password=request.form['password']
+        console.log(user)
+        console.log(password)
+        return jsonify(
+            retour="bien inscrit"
+        ), 200
+    else
+        return jsonify(
+            retour="erreur durant l'inscription"
+        ), 400
+
+
+
 
 # Réception d'un fichier
 @app.route('/upload', methods=['POST'])
