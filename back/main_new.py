@@ -45,7 +45,7 @@ def inscription():
         return jsonify(
             retour="bien inscrit"
         ), 200
-    else
+    else:
         return jsonify(
             retour="erreur durant l'inscription"
         ), 400
