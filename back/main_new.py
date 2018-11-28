@@ -83,10 +83,36 @@ def upload():
             return jsonify(d)
 
         elif f:
+            #sauvegarde du fichier photo sur le serveur
+            print("etape 1")
             filename = secure_filename(f.filename)
+            print("etape 2")
             f_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            print("etape 3")
             f.save(f_path)
+            print("etape 4")
+
+            #génération de l'url_photo
+
+
+            #obtention de la couleur
             f_color = color.get_color(f_path)
+            print("etape 5")
+
+            #récuperation user
+
+            dressing_id = request.form['dressing_id']
+            print("etape 6")
+
+            #récuperation type
+            type_clothes = request.form['type_clothes']
+            print("etape 7")
+
+            #sauvegarde des paramètre du vetement en BDD
+
+            sql = "insert into vetement (dressing_id, path_photo, color, type) values ('%s','%s','%s','%s');"%(dressing_id, f_path, f_color, type_clothes)
+            
+
             d = {
                 "code": "ok",
                 "color": f_color
