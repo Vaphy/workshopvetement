@@ -14,7 +14,6 @@ def select(sql):
         with connection.cursor() as cursor:
             cursor.execute(sql)
             result = cursor.fetchall()
-            print(result)
             return result
     finally:
         # connection.close()
