@@ -109,7 +109,11 @@ def upload():
             print("etape 7")
 
             #sauvegarde des paramètre du vetement en BDD
-            sql = "insert into vetement (dressing_id, path_photo, color, type) values ('%d','%s','%s','%d');"%(dressing_id, f_path, f_color, type_clothes)
+            type(dressing_id)
+            type(f_path)
+            type(f_color)
+            type(type_clothes)
+            #sql = "insert into vetement (dressing_id, path_photo, color, type) values ('%d','%s','%s','%d');"%(dressing_id, f_path, f_color, type_clothes)
             
 
             d = {
