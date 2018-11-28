@@ -6,7 +6,7 @@ import os
 import requests
 import color
 import database
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 from flask_talisman import Talisman
 from werkzeug.utils import secure_filename
@@ -109,6 +109,30 @@ def list_clothes():
     r = database.select(sql)
     return jsonify(r)
 
+# Réception d'un fichier
+@app.route('/download', methods=['GET'])
+# Sécurisation du code en https avec flask-talisman
+@talisman(force_https=True)
+def download():
+    if not request.args.get('id'):
+        d = {
+            "code": "error",
+            "error": "No id"
+        }
+        return jsonify(d)
+
+    id_clothes = request.args.get('id')
+    sql = "SELECT url_photo FROM vetement WHERE id=%s" % id_clothes
+    r = database.select(sql)
+    if not r:
+        d = {
+            "code": "error",
+            "error": "Not file for id"
+        }
+        return jsonify(d)
+
+    path = r[0].get("url_photo")
+    return send_file(path, as_attachment=True)
 
 if __name__ == '__main__':
         app.run(debug=True, host='0.0.0.0')
