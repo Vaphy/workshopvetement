@@ -115,7 +115,7 @@ def upload():
             int(user_id)
             print("user_id : %d"%(user_id))
 
-            sql = "SELECT id FROM dressing WHERE user_id = '%s';"%(user_id)
+            sql = "SELECT id FROM dressing WHERE user_id = '%d';"%(user_id)
             requette_dressing_id = database.select(sql)
             dressing_id = requette_dressing_id[0].get("id")
             int(dressing_id)
