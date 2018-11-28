@@ -110,8 +110,11 @@ def upload():
 
             #calcul du dressing en fonction de l'user connecté
             user_id = "SELECT id FROM users WHERE login = '%s';"%(user)
+            requette_user_id = database.select(user_id)
+            print("requette_user_id : "+requette_user_id)
             dressing_id = "SELECT id FROM dressing WHERE user_id = '%s';"%(user_id)
-            print(dressing_id)
+            requette_dressing_id = database.select(dressing_id)
+            print("requette_dressing_id : "+requette_dressing_id)
 
             #sauvegarde des paramètre du vetement en BDD
             #sql = "insert into vetement (dressing_id, path_photo, color, type, url_photo) values ('%d','%s','%s','%d','%s');"%(dressing_id, path_photo, color, type_clothes, url_photo)
