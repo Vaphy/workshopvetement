@@ -112,12 +112,12 @@ def upload():
             sql = "SELECT id FROM users WHERE login = '%s';"%(user)
             requette_user_id = database.select(sql)
             user_id = requette_user_id[0].get("id")
-            print("user_id : "+user_id)
+            print("user_id : "%s)%(user_id)
 
             sql = "SELECT id FROM dressing WHERE user_id = '%s';"%(user_id)
             requette_dressing_id = database.select(sql)
             dressing_id = requette_dressing_id[0].get("id")
-            print("dressing_id : "+dressing_id)
+            print("dressing_id : "%s)%(dressing_id)
 
             #sauvegarde des paramètre du vetement en BDD
             #sql = "insert into vetement (dressing_id, path_photo, color, type, url_photo) values ('%d','%s','%s','%d','%s');"%(dressing_id, path_photo, color, type_clothes, url_photo)
